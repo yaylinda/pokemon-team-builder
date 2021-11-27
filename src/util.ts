@@ -1,0 +1,1 @@
+export const SERIBII_BASE_URL = 'https://www.serebii.net';
