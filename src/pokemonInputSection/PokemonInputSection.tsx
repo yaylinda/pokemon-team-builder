@@ -1,20 +1,21 @@
 import Grid from '@mui/material/Grid';
-import { produce } from 'immer';
-import React, { useState } from 'react';
-import { Pokemon } from '../types';
+import React from 'react';
+import { Pokemon, PokemonMove, SelectedPokemon } from '../types';
 import OnePokemonInput from './OnePokemonInput';
 
 const POKEMON_TEAM_SIZE = 6;
 
-function PokemonInputSection() {
+export interface PokemonInputSectionProps {
+    pokemonTeam: (SelectedPokemon | null)[],
+    onChangeSelectedPokemon: (index: number, pokemon: Pokemon | null) => void,
+    onChangeSelectedPokemonMove: (pokemon_index: number, move_index: number, move: PokemonMove | null) => void,
+}
 
-    const [pokemonTeamData, setPokemonTeamData] = useState<(Pokemon | null)[]>([null, null, null, null, null, null]);
-
-    const onChangeSelectedPokemon = (index: number, pokemon: Pokemon | null) => {
-        setPokemonTeamData(produce(pokemonTeamData, (draft) => {
-            draft[index] = pokemon;
-        }));
-    }
+function PokemonInputSection({
+    pokemonTeam,
+    onChangeSelectedPokemon,
+    onChangeSelectedPokemonMove,
+}: PokemonInputSectionProps) {
 
     return (
         <Grid container spacing={2}>
@@ -23,8 +24,9 @@ function PokemonInputSection() {
                     <OnePokemonInput
                         key={`pokemon_${index}`}
                         index={index}
-                        selectedPokemon={pokemonTeamData[index]}
+                        selectedPokemon={pokemonTeam[index]}
                         onChangeSelectedPokemon={onChangeSelectedPokemon}
+                        onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
                     />)
             }
         </Grid>

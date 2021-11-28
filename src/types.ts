@@ -7,6 +7,10 @@ export interface Pokemon {
     image_src: string,
 }
 
+export interface SelectedPokemon extends Pokemon {
+    selectedMoves: (PokemonMove | null)[],
+}
+
 export interface PokemonMove {
     name: string,
     type: PokemonType,
@@ -35,3 +39,14 @@ export type PokemonType =
 ;
 
 export type PokemonMoveCategory = 'physical' | 'special' | 'other';
+
+export interface PokemonTypeEvaluation {
+    pokemonWeakToType: Pokemon[],
+    pokemonWithMovesEffectiveAgainstType: {
+        [pokemonName: string] : PokemonMove[],
+    }
+}
+
+export type PokemonTeamEvaluationResults = {
+    [type in PokemonType] : PokemonTypeEvaluation;
+} | {};
