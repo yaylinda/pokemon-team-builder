@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import { produce } from 'immer';
 import React, { useState } from 'react';
 import { Pokemon } from '../types';
 import OnePokemonInput from './OnePokemonInput';
@@ -11,8 +12,10 @@ function PokemonInputSection() {
 
     const [pokemonTeamData, setPokemonTeamData] = useState<(Pokemon | null)[]>([null, null, null, null, null, null]);
 
-    const onChangeonPokemonInputChange = (pokemon: Pokemon) => {
-
+    const onChangeSelectedPokemon = (index: number, pokemon: Pokemon) => {
+        setPokemonTeamData(produce(pokemonTeamData, (draft) => {
+            draft[index] = pokemon;
+        }));
     }
 
     return (
@@ -23,7 +26,7 @@ function PokemonInputSection() {
                         <OnePokemonInput 
                             index={index}
                             selectedPokemon={pokemonTeamData[index]}
-                            onChange={onChangeonPokemonInputChange}
+                            onChange={onChangeSelectedPokemon}
                         />)
                 
             }
