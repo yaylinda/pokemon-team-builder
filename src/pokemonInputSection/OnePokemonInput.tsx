@@ -1,6 +1,8 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import Avatar from '@mui/material/Avatar';
+import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
 import React from 'react';
@@ -24,15 +26,10 @@ function OnePokemonInput({
     onChangeSelectedPokemonMove,
 }: OnePokemonInputProps) {
 
-    const renderSelectedPokemon = () => {
-        return selectedPokemon ?
-            <Avatar
-                alt={selectedPokemon.name}
-                src={`${SERIBII_BASE_URL}${selectedPokemon.image_src}`}
-            /> :
-            <Avatar>?</Avatar>
-    }
-
+    /**
+     * 
+     * @returns 
+     */
     const renderSelectPokemonInput = () => {
         return (
             <Autocomplete
@@ -56,36 +53,69 @@ function OnePokemonInput({
         );
     }
 
-    const renderSelectPokemonMoves = () => {
+    /**
+     * 
+     * @returns 
+     */
+    const renderSelectedPokemon = () => {
         return (
-            selectedPokemon ?
-                Array.from(Array(NUM_ALLOWED_MOVES)).map((_, move_index) =>
-                    <Autocomplete
-                        key={`pokemon_${index}_move_${move_index}`}
-                        disabled={!selectedPokemon}
-                        autoHighlight
-                        options={selectedPokemon?.moves || []}
-                        getOptionLabel={(option) => option.name}
-                        renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                {option.name}
-                            </Box>
-                        )}
-                        renderInput={(params) => <TextField {...params} label="Move" />}
-                        onChange={(event, value) => onChangeSelectedPokemonMove(index, move_index, value)}
-                    />) :
-                <Typography variant="overline" display="block">
-                    Select a Pokemon before selecting moves
-                </Typography>
+            <div className="SelectedPokemonImage">
+                {
+                    selectedPokemon ?
+                        <img
+                            loading="lazy"
+                            width="40"
+                            src={`${SERIBII_BASE_URL}${selectedPokemon.image_src}`}
+                            alt=""
+                        /> : <Avatar>?</Avatar>
+                }
+            </div>
         );
+
+
     }
 
+
+    const selectMovesAutocomplete = (move_index: number) => (
+        <Autocomplete
+            key={`pokemon_${index}_move_${move_index}`}
+            disabled={!selectedPokemon}
+            size="small"
+            autoHighlight
+            options={selectedPokemon?.moves || []}
+            getOptionLabel={(option) => option.name}
+            renderOption={(props, option) => (
+                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                    {option.name}
+                </Box>
+            )}
+            renderInput={(params) => <TextField {...params} label="Move" />}
+            onChange={(event, value) => onChangeSelectedPokemonMove(index, move_index, value)}
+        />
+    );
+
+    /**
+     * 
+     * @returns 
+     */
+    const renderSelectPokemonMoves = () => 
+        Array.from(Array(NUM_ALLOWED_MOVES))
+            .map((_, move_index) => 
+                !selectedPokemon ? 
+                <Tooltip title="Selecte A Pokemon Before Selectin its moves">
+                    {selectMovesAutocomplete(move_index)}
+                </Tooltip>: 
+                selectMovesAutocomplete(move_index));
+
+    /**
+     * 
+     */
     return (
-        <div>
-            {renderSelectedPokemon()}
+        <Paper elevation={12}>
             {renderSelectPokemonInput()}
+            {renderSelectedPokemon()}
             {renderSelectPokemonMoves()}
-        </div>
+        </Paper>
     );
 }
 

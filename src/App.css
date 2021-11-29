@@ -1,3 +1,19 @@
 .App {
 
 }
+
+.PokemonInputSection {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.PokemonInputCard {
+    width: 300px
+}
+
+.SelectedPokemonImage {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

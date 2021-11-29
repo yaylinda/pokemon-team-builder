@@ -34,8 +34,6 @@ function PokemonTeamAnalysisSection({ pokemonTeam }: PokemonTeamAnalysisSectionP
 
     const renderResultsForTypeCard = (type: PokemonType) => {
 
-        console.log(`*************** ${JSON.stringify(results[type])}`);
-
         const resultsForType = results[type];
 
         return (

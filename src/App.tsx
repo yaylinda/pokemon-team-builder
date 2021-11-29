@@ -54,7 +54,7 @@ function App() {
     <React.Fragment>
       <CssBaseline />
 
-      <Container maxWidth={false}>
+      <Container>
         {renderHeaderBar()}
 
         <PokemonInputSection
