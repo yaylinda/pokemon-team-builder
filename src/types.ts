@@ -1,13 +1,16 @@
-export interface Pokemon {
+export interface BasePokemon {
     stats: number[],
     pokemon_url: string,
     name: string,
-    moves: PokemonMove[],
     types: PokemonType[],
     image_src: string,
 }
 
-export interface SelectedPokemon extends Pokemon {
+export interface Pokemon extends BasePokemon {
+    moves: PokemonMove[],
+}
+
+export interface SelectedPokemon extends BasePokemon {
     selectedMoves: (PokemonMove | null)[],
 }
 
@@ -38,13 +41,19 @@ export type PokemonType =
     'poison'
 ;
 
+export type PokemonTypeMap = {
+    [type in PokemonType]: PokemonType[]
+};
+
 export type PokemonMoveCategory = 'physical' | 'special' | 'other';
 
+export type PokemonMoveMap = {
+    [pokemonName: string] : PokemonMove[],
+};
+
 export interface PokemonTypeEvaluation {
-    pokemonWeakToType: Pokemon[],
-    pokemonWithMovesEffectiveAgainstType: {
-        [pokemonName: string] : PokemonMove[],
-    }
+    pokemonWeakToType: SelectedPokemon[],
+    pokemonWithMovesEffectiveAgainstType: PokemonMoveMap,
 }
 
 export type PokemonTeamEvaluationResults = {
