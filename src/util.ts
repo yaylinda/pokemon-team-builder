@@ -4,6 +4,8 @@ import { PokemonMove, PokemonMoveMap, PokemonTeamEvaluationResults, PokemonType,
 
 export const SERIBII_BASE_URL = 'https://www.serebii.net';
 
+export const getSeribiiTypeImageUrl = (type: PokemonType) => `${SERIBII_BASE_URL}/pokedex-bw/type/${type}.gif`;
+
 export const allTypes: PokemonType[] = [
     'normal',
     'fighting',
@@ -76,13 +78,6 @@ export const initializePokemonTeamEvaluationResults = (): PokemonTeamEvaluationR
         },
     }), {});
 }
-
-// const getPokemonWeakToType = (
-//     type: PokemonType,
-//     pokemonTeam: SelectedPokemon[],
-// ): SelectedPokemon[] => pokemonTeam
-//     .filter(pokemon => pokemon !== null)
-//     .filter(pokemon => intersection(pokemon.types, typeEffectivenesses[type]).length);
 
 const getPokemonWeakToType = (
     type: PokemonType,

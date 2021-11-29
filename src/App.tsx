@@ -29,7 +29,7 @@ function App() {
 
   const onChangeSelectedPokemonMove = (pokemonIndex: number, moveIndex: number, move: PokemonMove | null) => {
     setPokemonTeam(produce(pokemonTeam, (draft) => {
-      const pokemonToUpdate = pokemonTeam[pokemonIndex];
+      const pokemonToUpdate = draft[pokemonIndex];
       if (pokemonToUpdate === null) {
         return;
       }

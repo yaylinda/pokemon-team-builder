@@ -45,14 +45,18 @@ export type PokemonTypeMap = {
 export type PokemonMoveCategory = 'physical' | 'special' | 'other';
 
 export type PokemonMoveMap = {
-    [pokemonName: string] : PokemonMove[],
+    [pokemon: string] : PokemonMove[],
 }; 
 
+export type PokemonNameMap = {
+    [pokemon: string]: SelectedPokemon,
+}
+
 export interface PokemonTypeEvaluation {
-    pokemonWeakToType: string[],
+    pokemonWeakToType: SelectedPokemon[],
     pokemonWithMovesEffectiveAgainstType: PokemonMoveMap,
 }
 
-export type PokemonTeamEvaluationResults = {
-    [type in PokemonType] : PokemonTypeEvaluation;
-} | {};
+export interface PokemonTeamEvaluationResults {
+    [type: string] : PokemonTypeEvaluation
+};
