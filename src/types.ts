@@ -1,16 +1,13 @@
-export interface BasePokemon {
+export interface Pokemon {
     stats: number[],
     pokemon_url: string,
     name: string,
     types: PokemonType[],
     image_src: string,
-}
-
-export interface Pokemon extends BasePokemon {
     moves: PokemonMove[],
 }
 
-export interface SelectedPokemon extends BasePokemon {
+export interface SelectedPokemon extends Pokemon {
     selectedMoves: (PokemonMove | null)[],
 }
 
@@ -49,10 +46,10 @@ export type PokemonMoveCategory = 'physical' | 'special' | 'other';
 
 export type PokemonMoveMap = {
     [pokemonName: string] : PokemonMove[],
-};
+}; 
 
 export interface PokemonTypeEvaluation {
-    pokemonWeakToType: SelectedPokemon[],
+    pokemonWeakToType: string[],
     pokemonWithMovesEffectiveAgainstType: PokemonMoveMap,
 }
 

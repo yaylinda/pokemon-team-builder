@@ -1,6 +1,6 @@
 import { intersection } from 'lodash';
 
-import { PokemonMoveMap, PokemonTeamEvaluationResults, PokemonType, PokemonTypeMap, SelectedPokemon } from "./types";
+import { PokemonMove, PokemonMoveMap, PokemonTeamEvaluationResults, PokemonType, PokemonTypeMap, SelectedPokemon } from "./types";
 
 export const SERIBII_BASE_URL = 'https://www.serebii.net';
 
@@ -77,6 +77,13 @@ export const initializePokemonTeamEvaluationResults = (): PokemonTeamEvaluationR
     }), {});
 }
 
+// const getPokemonWeakToType = (
+//     type: PokemonType,
+//     pokemonTeam: SelectedPokemon[],
+// ): SelectedPokemon[] => pokemonTeam
+//     .filter(pokemon => pokemon !== null)
+//     .filter(pokemon => intersection(pokemon.types, typeEffectivenesses[type]).length);
+
 const getPokemonWeakToType = (
     type: PokemonType,
     pokemonTeam: SelectedPokemon[],
@@ -90,9 +97,10 @@ const getPokemonWithMovesEffectiveAgainstType = (
 ): PokemonMoveMap => pokemonTeam.reduce((prev, pokemon) => ({
     ...prev,
     [pokemon.name]: pokemon.selectedMoves
-        .filter(move => move != null)
+        .filter(move => move !== null)
         .filter(move => typeWeaknesses[type].includes(move!.type))
 }), {});
+
 
 export const evaluateTeam = (pokemonTeam: SelectedPokemon[]): PokemonTeamEvaluationResults => {
     return allTypes.reduce((prev, type) => ({
@@ -101,5 +109,5 @@ export const evaluateTeam = (pokemonTeam: SelectedPokemon[]): PokemonTeamEvaluat
             pokemonWeakToType: getPokemonWeakToType(type, pokemonTeam),
             pokemonWithMovesEffectiveAgainstType: getPokemonWithMovesEffectiveAgainstType(type, pokemonTeam),
         },
-    }), {})
+    }), {});
 }
