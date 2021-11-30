@@ -2,12 +2,14 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { isEmpty } from 'lodash';
 import React from 'react';
-import { PokemonNameMap, PokemonTeamEvaluationResults, PokemonType, SelectedPokemon } from '../types';
-import { getSeribiiTypeImageUrl, SERIBII_BASE_URL } from '../util';
+import { NoDataText, PokemonAvatar, VerticalDivider } from '../common';
+import { PokemonMove, PokemonMoveMap, PokemonNameMap, PokemonTeamEvaluationResults, PokemonType, SelectedPokemon } from '../types';
+import { getSeribiiTypeImageUrl } from '../util';
 
 export interface PokemonTeamResultsSectionProps {
     results: PokemonTeamEvaluationResults,
@@ -16,13 +18,91 @@ export interface PokemonTeamResultsSectionProps {
 
 function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResultsSectionProps) {
 
+    /**
+     * 
+     * @param pokemonWeakToType 
+     * @returns 
+     */
+    const renderPokemonWeakToType = (pokemonWeakToType: SelectedPokemon[]) => {
+        return (
+            <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <Typography variant="overline" component="div">
+                    Disadvantages
+                </Typography>
+                {
+                    (pokemonWeakToType.length && pokemonWeakToType)
+                        ? <Stack direction="row" spacing={1}>{ pokemonWeakToType.map(PokemonAvatar) }</Stack>
+                        : <NoDataText />
+                }
+            </Box>
+        );
+    }
+
+    /**
+     * 
+     * @param param0 
+     */
+    const renderPokemonWithMoves = ({
+        pokemon,
+        moves,
+    }: {
+        pokemon: SelectedPokemon,
+        moves: PokemonMove[],
+    }) => {
+        return (
+            <Box sx={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <PokemonAvatar {...pokemon} />
+                <Stack direction="row" spacing={1}>
+                    {
+                        moves.map(move => (
+                            <Chip
+                                size="small"
+                                label={`${move.name}`}
+                                avatar={<Avatar src={getSeribiiTypeImageUrl(move.type)} />}
+                            />
+                        ))
+                    }
+                </Stack>
+            </Box>
+        );
+    };
+
+    /**
+     * 
+     * @param pokemonWithMovesEffectiveAgainstType 
+     * @returns 
+     */
+    const renderPokemonWithMovesEffectiveAgainstType = (pokemonWithMovesEffectiveAgainstType: PokemonMoveMap) => {
+        return (
+            <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <Typography variant="overline" component="div">
+                    Advantages
+                </Typography>
+                {
+                    isEmpty(pokemonWithMovesEffectiveAgainstType)
+                        ? <NoDataText />
+                        : Object.keys(pokemonWithMovesEffectiveAgainstType).map(pokemonName => {
+                            const pokemon: SelectedPokemon = pokemonNameMap[pokemonName];
+                            const moves = pokemonWithMovesEffectiveAgainstType[pokemonName];
+                            return renderPokemonWithMoves({ pokemon, moves });
+                        })
+                }
+            </Box>
+        );
+    }
+
+    /**
+     * 
+     * @param type 
+     * @returns 
+     */
     const renderResultForType = (type: PokemonType) => {
 
-        const resultsForType = results[type];
+        const { pokemonWeakToType, pokemonWithMovesEffectiveAgainstType } = results[type];
 
         return (
-            <Paper variant="outlined" sx={{ padding: 2, display: 'flex', flexDirection: 'row' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center'}}>
+            <Paper variant="outlined" sx={{ padding: 2, marginBottom: 2, display: 'flex', flexDirection: 'row' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <img
                         loading="lazy"
                         width="40"
@@ -31,50 +111,12 @@ function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResul
                     />
                 </Box>
 
-                <Divider orientation="vertical" variant="middle" flexItem />
+                <VerticalDivider />
 
-                <Box sx={{ display: 'flex'}}>
-                    <Typography gutterBottom variant="overline" component="div">Disadvantages</Typography>
-                    {
-                        resultsForType.pokemonWeakToType.map(pokemon => <Avatar
-                            alt={pokemon.name}
-                            src={`${SERIBII_BASE_URL}${pokemon.image_src}`}
-                        />)
-                    }
-                </Box>
-
-                <Divider orientation="vertical" variant="middle" flexItem />
-
-                <Box sx={{ display: 'flex'}}>
-                    <Typography gutterBottom variant="overline" component="div">Advantages</Typography>
-                    {
-                        Object.keys(resultsForType.pokemonWithMovesEffectiveAgainstType).map(pokemonName => {
-                            const pokemon: SelectedPokemon = pokemonNameMap[pokemonName];
-                            const moves = resultsForType.pokemonWithMovesEffectiveAgainstType[pokemonName];
-
-                            if (!pokemon || !moves || !moves.length) {
-                                return null;
-                            }
-
-                            return (
-                                <React.Fragment>
-                                    <Avatar
-                                        alt={pokemon.name}
-                                        src={`${SERIBII_BASE_URL}${pokemon.image_src}`}
-                                    />
-                                    {
-                                        moves.map(move => (
-                                            <Chip
-                                                label={`${move.name}`}
-                                                avatar={<Avatar src={getSeribiiTypeImageUrl(move.type)} />}
-                                            />
-                                        ))
-                                    }
-                                </React.Fragment>
-                            )
-
-                        })
-                    }
+                <Box sx={{ display: 'flex', width: '100%' }}>
+                    {renderPokemonWeakToType(pokemonWeakToType)}
+                    <VerticalDivider />
+                    {renderPokemonWithMovesEffectiveAgainstType(pokemonWithMovesEffectiveAgainstType)}
                 </Box>
             </Paper>
         );

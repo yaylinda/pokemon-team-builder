@@ -1,6 +1,5 @@
 import { intersection } from 'lodash';
-
-import { PokemonMove, PokemonMoveMap, PokemonTeamEvaluationResults, PokemonType, PokemonTypeMap, SelectedPokemon } from "./types";
+import { PokemonMoveMap, PokemonTeamEvaluationResults, PokemonType, PokemonTypeMap, SelectedPokemon } from "./types";
 
 export const SERIBII_BASE_URL = 'https://www.serebii.net';
 
@@ -69,6 +68,10 @@ export const typeEffectivenesses: PokemonTypeMap = {
     'normal': [],
 };
 
+/**
+ * 
+ * @returns 
+ */
 export const initializePokemonTeamEvaluationResults = (): PokemonTeamEvaluationResults => {
     return allTypes.reduce((prev, type) => ({
         ...prev,
@@ -79,6 +82,12 @@ export const initializePokemonTeamEvaluationResults = (): PokemonTeamEvaluationR
     }), {});
 }
 
+/**
+ * 
+ * @param type 
+ * @param pokemonTeam 
+ * @returns 
+ */
 const getPokemonWeakToType = (
     type: PokemonType,
     pokemonTeam: SelectedPokemon[],
@@ -86,17 +95,34 @@ const getPokemonWeakToType = (
     pokemon => intersection(pokemon.types, typeEffectivenesses[type]).length
 );
 
+/**
+ * 
+ * @param type 
+ * @param pokemonTeam 
+ * @returns 
+ */
 const getPokemonWithMovesEffectiveAgainstType = (
     type: PokemonType,
     pokemonTeam: SelectedPokemon[],
-): PokemonMoveMap => pokemonTeam.reduce((prev, pokemon) => ({
-    ...prev,
-    [pokemon.name]: pokemon.selectedMoves
+): PokemonMoveMap => pokemonTeam.reduce((prev, pokemon) => {
+    const effectiveMoves = pokemon.selectedMoves
         .filter(move => move !== null)
-        .filter(move => typeWeaknesses[type].includes(move!.type))
-}), {});
+        .filter(move => typeWeaknesses[type].includes(move!.type));
 
+    if (!effectiveMoves || !effectiveMoves.length) {
+        return ({ ...prev });
+    }
+    return ({
+        ...prev,
+        [pokemon.name]: effectiveMoves,
+    });
+}, {});
 
+/**
+ * 
+ * @param pokemonTeam 
+ * @returns 
+ */
 export const evaluateTeam = (pokemonTeam: SelectedPokemon[]): PokemonTeamEvaluationResults => {
     return allTypes.reduce((prev, type) => ({
         ...prev,
