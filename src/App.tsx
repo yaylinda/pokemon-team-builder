@@ -1,75 +1,120 @@
 import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import produce from 'immer';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PokemonInputSection from './pokemonInputSection/PokemonInputSection';
 import PokemonTeamAnalysisSection from './pokemonTeamResultsSection/PokemonTeamResultsSection';
-import { Pokemon, PokemonMove, SelectedPokemon } from './types';
+import { Pokemon, PokemonMove, PokemonNameMap, PokemonTeamEvaluationResults, SelectedPokemon } from './types';
+import { evaluateTeam, initializePokemonTeamEvaluationResults } from './util';
 
 function App() {
 
-  const [pokemonTeam, setPokemonTeam] = useState<(SelectedPokemon | null)[]>([null, null, null, null, null, null]);
+    /**
+     * 
+     */
+    const [pokemonTeam, setPokemonTeam] = useState<(SelectedPokemon | null)[]>([null, null, null, null, null, null]);
 
-  const onChangeSelectedPokemon = (index: number, pokemon: Pokemon | null) => {
-    setPokemonTeam(produce(pokemonTeam, (draft) => {
-      if (pokemon === null) {
-        draft[index] = null;
-      } else {
-        draft[index] = {
-          ...pokemon,
-          selectedMoves: [null, null, null, null],
-        };
-      }
-    }));
-  }
+    /**
+     * 
+     */
+    const [results, setResults] = useState<PokemonTeamEvaluationResults>(initializePokemonTeamEvaluationResults());
 
-  const onChangeSelectedPokemonMove = (pokemonIndex: number, moveIndex: number, move: PokemonMove | null) => {
-    setPokemonTeam(produce(pokemonTeam, (draft) => {
-      const pokemonToUpdate = draft[pokemonIndex];
-      if (pokemonToUpdate === null) {
-        return;
-      }
+    /**
+     * 
+     */
+    const pokemonMapByName: PokemonNameMap = useMemo(
+        () => pokemonTeam
+            .filter(pokemon => pokemon !== null)
+            .reduce((prev, pokemon) => ({
+                ...prev,
+                [pokemon!.name]: pokemon,
+            }), {}), [pokemonTeam]);
 
-      pokemonToUpdate.selectedMoves[moveIndex] = move;
-    }));
-  }
+    /**
+     * 
+     */
+    useEffect(() => {
+        setResults(evaluateTeam(pokemonTeam.filter(pokemon => pokemon !== null) as SelectedPokemon[]));
+    }, [pokemonTeam]);
 
-  const renderHeaderBar = () => {
+    /**
+     * 
+     * @param index 
+     * @param pokemon 
+     */
+    const onChangeSelectedPokemon = (index: number, pokemon: Pokemon | null) => {
+        setPokemonTeam(produce(pokemonTeam, (draft) => {
+            if (pokemon === null) {
+                draft[index] = null;
+            } else {
+                draft[index] = {
+                    ...pokemon,
+                    selectedMoves: [null, null, null, null],
+                };
+            }
+        }));
+    }
+
+    /**
+     * 
+     * @param pokemonIndex 
+     * @param moveIndex 
+     * @param move 
+     */
+    const onChangeSelectedPokemonMove = (pokemonIndex: number, moveIndex: number, move: PokemonMove | null) => {
+        setPokemonTeam(produce(pokemonTeam, (draft) => {
+            const pokemonToUpdate = draft[pokemonIndex];
+            if (pokemonToUpdate === null) {
+                return;
+            }
+
+            pokemonToUpdate.selectedMoves[moveIndex] = move;
+        }));
+    }
+
+    /**
+     * 
+     * @returns 
+     */
+    const renderHeaderBar = () => {
+        return (
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Pokemon Brilliant Diamond and Shining Pearl Team Builder
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+        );
+    }
+
+    /**
+     * 
+     */
     return (
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Pokemon Brilliant Diamond and Shining Pearl Team Builder
-          </Typography>
-        </Toolbar>
-      </AppBar>
+        <React.Fragment>
+            <CssBaseline />
+
+            <Container>
+                {renderHeaderBar()}
+
+                <PokemonInputSection
+                    pokemonTeam={pokemonTeam}
+                    onChangeSelectedPokemon={onChangeSelectedPokemon}
+                    onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
+                />
+
+                <PokemonTeamAnalysisSection
+                    results={results}
+                    pokemonNameMap={pokemonMapByName}
+                />
+
+            </Container>
+        </React.Fragment>
     );
-  }
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-
-      <Container>
-        {renderHeaderBar()}
-
-        <PokemonInputSection
-          pokemonTeam={pokemonTeam}
-          onChangeSelectedPokemon={onChangeSelectedPokemon}
-          onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
-        />
-
-        <PokemonTeamAnalysisSection
-          pokemonTeam={pokemonTeam}
-        />
-
-      </Container>
-    </React.Fragment>
-  );
 }
 
 export default App;

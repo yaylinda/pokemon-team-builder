@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
 import React from 'react';
 import pokemonData from '../pokemonData';
@@ -47,7 +46,7 @@ function OnePokemonInput({
                         {option.name}
                     </Box>
                 )}
-                renderInput={(params) => <TextField {...params} label="Pokemon" />}
+                renderInput={(params) => <TextField {...params} label={`Pokemon ${index + 1}`} />}
                 onChange={(event, value) => onChangeSelectedPokemon(index, value)}
             />
         );
@@ -71,13 +70,16 @@ function OnePokemonInput({
                 }
             </div>
         );
-
-
     }
 
-
+    /**
+     * 
+     * @param move_index 
+     * @returns 
+     */
     const selectMovesAutocomplete = (move_index: number) => (
         <Autocomplete
+            className="PokemonMoveAutocomplete"
             key={`pokemon_${index}_move_${move_index}`}
             disabled={!selectedPokemon}
             size="small"
@@ -89,7 +91,7 @@ function OnePokemonInput({
                     {option.name}
                 </Box>
             )}
-            renderInput={(params) => <TextField {...params} label="Move" />}
+            renderInput={(params) => <TextField {...params} label={`Move ${move_index + 1}`} />}
             onChange={(event, value) => onChangeSelectedPokemonMove(index, move_index, value)}
         />
     );
@@ -102,7 +104,7 @@ function OnePokemonInput({
         Array.from(Array(NUM_ALLOWED_MOVES))
             .map((_, move_index) => 
                 !selectedPokemon ? 
-                <Tooltip title="Selecte A Pokemon Before Selectin its moves">
+                <Tooltip title="Select a Pokemon before selecting its moves">
                     {selectMovesAutocomplete(move_index)}
                 </Tooltip>: 
                 selectMovesAutocomplete(move_index));
@@ -111,7 +113,7 @@ function OnePokemonInput({
      * 
      */
     return (
-        <Paper elevation={12}>
+        <Paper elevation={12} className="PokemonInputCardContent">
             {renderSelectPokemonInput()}
             {renderSelectedPokemon()}
             {renderSelectPokemonMoves()}

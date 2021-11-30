@@ -3,34 +3,17 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useMemo, useState } from 'react';
-import { PokemonNameMap, PokemonTeamEvaluationResults, PokemonType, PokemonTypeEvaluation, SelectedPokemon } from '../types';
-import { evaluateTeam, getSeribiiTypeImageUrl, initializePokemonTeamEvaluationResults, SERIBII_BASE_URL } from '../util';
+import React from 'react';
+import { PokemonNameMap, PokemonTeamEvaluationResults, PokemonType, SelectedPokemon } from '../types';
+import { getSeribiiTypeImageUrl, SERIBII_BASE_URL } from '../util';
 
-export interface PokemonTeamAnalysisSectionProps {
-    pokemonTeam: (SelectedPokemon | null)[],
+export interface PokemonTeamResultsSectionProps {
+    results: PokemonTeamEvaluationResults,
+    pokemonNameMap: PokemonNameMap,
 }
 
-function PokemonTeamAnalysisSection({ pokemonTeam }: PokemonTeamAnalysisSectionProps) {
-
-    const pokemonMapByName: PokemonNameMap = useMemo(
-        () => pokemonTeam
-            .filter(pokemon => pokemon !== null)
-            .reduce((prev, pokemon) => ({
-                ...prev,
-                [pokemon!.name]: pokemon,
-            }), {}), [pokemonTeam]);
-
-    const [results, setResults] = useState<PokemonTeamEvaluationResults>(initializePokemonTeamEvaluationResults());
-
-    useEffect(() => {
-        if (pokemonTeam.every(p => p === null)) {
-            return;
-        }
-        setResults(evaluateTeam(pokemonTeam.filter(pokemon => pokemon !== null) as SelectedPokemon[]));
-    }, [pokemonTeam]);
+function PokemonTeamResultsSection({ results, pokemonNameMap}: PokemonTeamResultsSectionProps) {
 
     const renderResultsForTypeCard = (type: PokemonType) => {
 
@@ -56,9 +39,10 @@ function PokemonTeamAnalysisSection({ pokemonTeam }: PokemonTeamAnalysisSectionP
                     <Typography gutterBottom variant="h5" component="div">Pokemon with moves that are strong against {type}</Typography>
                     {
                         Object.keys(resultsForType.pokemonWithMovesEffectiveAgainstType).map(pokemonName => {
-                            const pokemon: SelectedPokemon = pokemonMapByName[pokemonName];
+                            const pokemon: SelectedPokemon = pokemonNameMap[pokemonName];
 
                             const moves = resultsForType.pokemonWithMovesEffectiveAgainstType[pokemonName];
+
                             return (
                                 <React.Fragment>
                                     <Avatar
@@ -67,9 +51,9 @@ function PokemonTeamAnalysisSection({ pokemonTeam }: PokemonTeamAnalysisSectionP
                                     />
                                     {
                                         moves.map(move => (
-                                            <Chip 
+                                            <Chip
                                                 label={`${move.name}`}
-                                                avatar={<Avatar src={getSeribiiTypeImageUrl(move.type)}/>}
+                                                avatar={<Avatar src={getSeribiiTypeImageUrl(move.type)} />}
                                             />
                                         ))
                                     }
@@ -93,4 +77,4 @@ function PokemonTeamAnalysisSection({ pokemonTeam }: PokemonTeamAnalysisSectionP
     );
 }
 
-export default PokemonTeamAnalysisSection;
+export default PokemonTeamResultsSection;

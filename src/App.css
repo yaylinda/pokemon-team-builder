@@ -1,14 +1,19 @@
-.App {
-
-}
-
 .PokemonInputSection {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .PokemonInputCard {
-    width: 300px
+    width: 300px;
+}
+
+.PokemonInputCardContent {
+    padding: 20px;
+    border-radius: 4%;
+}
+
+.PokemonMoveAutocomplete:not(:last-child) {
+    margin-bottom: 10px;
 }
 
 .SelectedPokemonImage {

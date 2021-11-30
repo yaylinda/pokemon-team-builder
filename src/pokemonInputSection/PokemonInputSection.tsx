@@ -3,7 +3,6 @@ import React from 'react';
 import { Pokemon, PokemonMove, SelectedPokemon } from '../types';
 import OnePokemonInput from './OnePokemonInput';
 import '../App.css';
-import Divider from '@mui/material/Divider';
 
 const POKEMON_TEAM_SIZE = 6;
 
@@ -42,8 +41,6 @@ function PokemonInputSection({
                         </Grid>)
                 }
             </Grid>
-
-            <Divider className="PokemonInputSectionDivider" variant="middle" />
         </div>
     );
 }
