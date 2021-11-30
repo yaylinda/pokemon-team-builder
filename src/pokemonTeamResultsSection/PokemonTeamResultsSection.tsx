@@ -31,7 +31,7 @@ function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResul
                 </Typography>
                 {
                     (pokemonWeakToType.length && pokemonWeakToType)
-                        ? <Stack direction="row" spacing={1}>{ pokemonWeakToType.map(PokemonAvatar) }</Stack>
+                        ? <Stack direction="row" spacing={1}>{pokemonWeakToType.map(PokemonAvatar)}</Stack>
                         : <NoDataText />
                 }
             </Box>
@@ -102,22 +102,24 @@ function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResul
 
         return (
             <Paper variant="outlined" sx={{ padding: 2, marginBottom: 2, display: 'flex', flexDirection: 'row' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                        loading="lazy"
-                        width="40"
-                        src={getSeribiiTypeImageUrl(type)}
-                        alt={type}
-                    />
-                </Box>
+                <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} sx={{display: 'flex', flex: 1, flexDirection: 'row' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <img
+                            loading="lazy"
+                            width="40"
+                            src={getSeribiiTypeImageUrl(type)}
+                            alt={type}
+                        />
+                    </Box>
 
-                <VerticalDivider />
-
-                <Box sx={{ display: 'flex', width: '100%' }}>
-                    {renderPokemonWeakToType(pokemonWeakToType)}
                     <VerticalDivider />
-                    {renderPokemonWithMovesEffectiveAgainstType(pokemonWithMovesEffectiveAgainstType)}
-                </Box>
+
+                    <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} sx={{ display: 'flex', width: '100%' }}>
+                        {renderPokemonWeakToType(pokemonWeakToType)}
+                        <VerticalDivider />
+                        {renderPokemonWithMovesEffectiveAgainstType(pokemonWithMovesEffectiveAgainstType)}
+                    </Stack>
+                </Stack>
             </Paper>
         );
     }
