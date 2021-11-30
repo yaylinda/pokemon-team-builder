@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pokemon, PokemonMove, SelectedPokemon } from '../types';
 import OnePokemonInput from './OnePokemonInput';
 import '../App.css';
@@ -17,6 +17,11 @@ function PokemonInputSection({
     onChangeSelectedPokemon,
     onChangeSelectedPokemonMove,
 }: PokemonInputSectionProps) {
+
+    /**
+     * 
+     */
+    const selectedPokemonNames: Set<string> = useMemo(() => new Set(pokemonTeam.filter(p => p !== null).map(p => p!.name)), [pokemonTeam]);
 
     return (
         <Grid
@@ -37,6 +42,7 @@ function PokemonInputSection({
                             selectedPokemon={pokemonTeam[index]}
                             onChangeSelectedPokemon={onChangeSelectedPokemon}
                             onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
+                            selectedPokemonNames={selectedPokemonNames}
                         />
                     </Grid>)
             }

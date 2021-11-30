@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/system/Box';
-import React from 'react';
+import React, { useMemo } from 'react';
 import pokemonData from '../pokemonData';
 import { Pokemon, PokemonMove, SelectedPokemon } from '../types';
 import { SERIBII_BASE_URL } from '../util';
@@ -16,6 +16,7 @@ export interface OnePokemonInputProps {
     selectedPokemon: SelectedPokemon | null;
     onChangeSelectedPokemon: (index: number, pokemon: Pokemon | null) => void;
     onChangeSelectedPokemonMove: (pokemon_index: number, move_index: number, move: PokemonMove | null) => void,
+    selectedPokemonNames: Set<string>,
 }
 
 function OnePokemonInput({
@@ -23,7 +24,19 @@ function OnePokemonInput({
     selectedPokemon,
     onChangeSelectedPokemon,
     onChangeSelectedPokemonMove,
+    selectedPokemonNames
 }: OnePokemonInputProps) {
+
+    /**
+     * 
+     */
+    const selectedMoveNames: Set<string> = useMemo(() => {
+        if (!selectedPokemon) {
+            return new Set([]);
+        }
+
+        return new Set(selectedPokemon.selectedMoves.filter(m => m !== null).map(m => m!.name));
+    }, [selectedPokemon]);
 
     /**
      * 
@@ -33,7 +46,8 @@ function OnePokemonInput({
         return (
             <Autocomplete
                 autoHighlight
-                options={pokemonData}
+                options={pokemonData.filter(p => !selectedPokemonNames.has(p.name))}
+                size="small"
                 getOptionLabel={(option) => option.name}
                 renderOption={(props, option) => (
                     <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
@@ -46,7 +60,7 @@ function OnePokemonInput({
                         {option.name}
                     </Box>
                 )}
-                renderInput={(params) => <TextField {...params} label={`Pokemon ${index + 1}`} />}
+                renderInput={(params) => <TextField {...params} label={`Pokemon ${index + 1}`} size="small" />}
                 onChange={(event, value) => onChangeSelectedPokemon(index, value)}
             />
         );
@@ -84,14 +98,14 @@ function OnePokemonInput({
             disabled={!selectedPokemon}
             size="small"
             autoHighlight
-            options={selectedPokemon?.moves || []}
+            options={(selectedPokemon?.moves || []).filter(m => !selectedMoveNames.has(m.name))}
             getOptionLabel={(option) => option.name}
             renderOption={(props, option) => (
                 <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                     {option.name}
                 </Box>
             )}
-            renderInput={(params) => <TextField {...params} label={`Move ${move_index + 1}`} />}
+            renderInput={(params) => <TextField {...params} label={`Move ${move_index + 1}`} size="small" />}
             onChange={(event, value) => onChangeSelectedPokemonMove(index, move_index, value)}
         />
     );
