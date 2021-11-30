@@ -101,11 +101,7 @@ function App() {
 
             {renderHeaderBar()}
 
-            <Container sx={{ paddingTop: 2 }}>
-
-                <Divider>
-                    <Chip label="TEAM" color="primary" variant="outlined" />
-                </Divider>
+            <Container>
 
                 <PokemonInputSection
                     pokemonTeam={pokemonTeam}
