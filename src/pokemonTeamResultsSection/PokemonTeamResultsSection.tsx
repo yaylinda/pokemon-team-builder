@@ -1,8 +1,9 @@
 import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { PokemonNameMap, PokemonTeamEvaluationResults, PokemonType, SelectedPokemon } from '../types';
@@ -13,35 +14,47 @@ export interface PokemonTeamResultsSectionProps {
     pokemonNameMap: PokemonNameMap,
 }
 
-function PokemonTeamResultsSection({ results, pokemonNameMap}: PokemonTeamResultsSectionProps) {
+function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResultsSectionProps) {
 
-    const renderResultsForTypeCard = (type: PokemonType) => {
+    const renderResultForType = (type: PokemonType) => {
 
         const resultsForType = results[type];
 
         return (
-            <Card>
-                <CardHeader
-                    avatar={<Avatar>type</Avatar>}
-                    title={type}
-                    subheader="type"
-                />
-                <CardContent>
+            <Paper variant="outlined" sx={{ padding: 2, display: 'flex', flexDirection: 'row' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                    <img
+                        loading="lazy"
+                        width="40"
+                        src={getSeribiiTypeImageUrl(type)}
+                        alt={type}
+                    />
+                </Box>
 
-                    <Typography gutterBottom variant="h5" component="div">Pokemon that are weak to {type}</Typography>
+                <Divider orientation="vertical" variant="middle" flexItem />
+
+                <Box sx={{ display: 'flex'}}>
+                    <Typography gutterBottom variant="overline" component="div">Disadvantages</Typography>
                     {
                         resultsForType.pokemonWeakToType.map(pokemon => <Avatar
                             alt={pokemon.name}
                             src={`${SERIBII_BASE_URL}${pokemon.image_src}`}
                         />)
                     }
+                </Box>
 
-                    <Typography gutterBottom variant="h5" component="div">Pokemon with moves that are strong against {type}</Typography>
+                <Divider orientation="vertical" variant="middle" flexItem />
+
+                <Box sx={{ display: 'flex'}}>
+                    <Typography gutterBottom variant="overline" component="div">Advantages</Typography>
                     {
                         Object.keys(resultsForType.pokemonWithMovesEffectiveAgainstType).map(pokemonName => {
                             const pokemon: SelectedPokemon = pokemonNameMap[pokemonName];
-
                             const moves = resultsForType.pokemonWithMovesEffectiveAgainstType[pokemonName];
+
+                            if (!pokemon || !moves || !moves.length) {
+                                return null;
+                            }
 
                             return (
                                 <React.Fragment>
@@ -62,18 +75,17 @@ function PokemonTeamResultsSection({ results, pokemonNameMap}: PokemonTeamResult
 
                         })
                     }
-
-                </CardContent>
-            </Card>
+                </Box>
+            </Paper>
         );
     }
 
     return (
-        <div>
+        <Container sx={{ marginTop: 4 }}>
             {
-                Object.keys(results).map(type => renderResultsForTypeCard(type as PokemonType))
+                Object.keys(results).map(type => renderResultForType(type as PokemonType))
             }
-        </div>
+        </Container>
     );
 }
 

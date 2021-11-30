@@ -1,12 +1,14 @@
 import AppBar from '@mui/material/AppBar';
+import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import produce from 'immer';
 import React, { useEffect, useMemo, useState } from 'react';
 import PokemonInputSection from './pokemonInputSection/PokemonInputSection';
-import PokemonTeamAnalysisSection from './pokemonTeamResultsSection/PokemonTeamResultsSection';
+import PokemonTeamResultsSection from './pokemonTeamResultsSection/PokemonTeamResultsSection';
 import { Pokemon, PokemonMove, PokemonNameMap, PokemonTeamEvaluationResults, SelectedPokemon } from './types';
 import { evaluateTeam, initializePokemonTeamEvaluationResults } from './util';
 
@@ -96,10 +98,10 @@ function App() {
      */
     return (
         <React.Fragment>
-            <CssBaseline />
+
+            {renderHeaderBar()}
 
             <Container>
-                {renderHeaderBar()}
 
                 <PokemonInputSection
                     pokemonTeam={pokemonTeam}
@@ -107,12 +109,17 @@ function App() {
                     onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
                 />
 
-                <PokemonTeamAnalysisSection
+                <Divider>
+                    <Chip label="Results" />
+                </Divider>
+
+                <PokemonTeamResultsSection
                     results={results}
                     pokemonNameMap={pokemonMapByName}
                 />
 
             </Container>
+
         </React.Fragment>
     );
 }

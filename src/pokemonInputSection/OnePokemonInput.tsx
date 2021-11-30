@@ -41,7 +41,7 @@ function OnePokemonInput({
                             loading="lazy"
                             width="20"
                             src={`${SERIBII_BASE_URL}${option.image_src}`}
-                            alt=""
+                            alt={option.name}
                         />
                         {option.name}
                     </Box>
@@ -58,17 +58,17 @@ function OnePokemonInput({
      */
     const renderSelectedPokemon = () => {
         return (
-            <div className="SelectedPokemonImage">
+            <Box component="div" sx={{ height: 80, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 {
                     selectedPokemon ?
                         <img
                             loading="lazy"
-                            width="40"
+                            width="60"
                             src={`${SERIBII_BASE_URL}${selectedPokemon.image_src}`}
                             alt=""
-                        /> : <Avatar>?</Avatar>
+                        /> : <Avatar sx={{ height: 60, width: 60 }}>?</Avatar>
                 }
-            </div>
+            </Box>
         );
     }
 
@@ -113,7 +113,7 @@ function OnePokemonInput({
      * 
      */
     return (
-        <Paper elevation={12} className="PokemonInputCardContent">
+        <Paper variant="outlined" sx={{ padding: 2 }}>
             {renderSelectPokemonInput()}
             {renderSelectedPokemon()}
             {renderSelectPokemonMoves()}

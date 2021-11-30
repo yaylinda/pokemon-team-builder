@@ -19,29 +19,28 @@ function PokemonInputSection({
 }: PokemonInputSectionProps) {
 
     return (
-        <div className="PokemonInputSection">
-            <Grid
-                container
-                columns={{ xs: 1, sm: 2, md: 3, lg: 3, xl: 6 }}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                spacing={4}
-            >
-                {
-                    Array.from(Array(POKEMON_TEAM_SIZE)).map((_, index) =>
-                        <Grid item className="PokemonInputCard">
-                            <OnePokemonInput
-                                key={`pokemon_${index}`}
-                                index={index}
-                                selectedPokemon={pokemonTeam[index]}
-                                onChangeSelectedPokemon={onChangeSelectedPokemon}
-                                onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
-                            />
-                        </Grid>)
-                }
-            </Grid>
-        </div>
+        <Grid
+            container
+            columns={{ xs: 1, sm: 2, md: 3, lg: 3, xl: 6 }}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={4}
+            sx={{ marginTop: 1, marginBottom: 4 }}
+        >
+            {
+                Array.from(Array(POKEMON_TEAM_SIZE)).map((_, index) =>
+                    <Grid item className="PokemonInputCard">
+                        <OnePokemonInput
+                            key={`pokemon_${index}`}
+                            index={index}
+                            selectedPokemon={pokemonTeam[index]}
+                            onChangeSelectedPokemon={onChangeSelectedPokemon}
+                            onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
+                        />
+                    </Grid>)
+            }
+        </Grid>
     );
 }
 
