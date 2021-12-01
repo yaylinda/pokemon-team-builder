@@ -1,7 +1,7 @@
 import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -84,10 +84,12 @@ function App() {
     const renderHeaderBar = () => {
         return (
             <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Toolbar sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                    <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginRight: 2 }}/>
+                    <Typography variant="h6" component="div">
                         Pokemon Brilliant Diamond and Shining Pearl Team Builder
                     </Typography>
+                    <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginLeft: 2 }}/>
                 </Toolbar>
             </AppBar>
         );

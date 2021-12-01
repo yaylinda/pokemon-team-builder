@@ -35,9 +35,8 @@ function PokemonInputSection({
         >
             {
                 Array.from(Array(POKEMON_TEAM_SIZE)).map((_, index) =>
-                    <Grid item className="PokemonInputCard">
+                    <Grid item className="PokemonInputCard" key={`pokemon_${index}`}>
                         <OnePokemonInput
-                            key={`pokemon_${index}`}
                             index={index}
                             selectedPokemon={pokemonTeam[index]}
                             onChangeSelectedPokemon={onChangeSelectedPokemon}

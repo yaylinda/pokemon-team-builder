@@ -50,12 +50,13 @@ function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResul
         moves: PokemonMove[],
     }) => {
         return (
-            <Box sx={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center' }} key={`pokemon_${pokemon.name}_with_moves`}>
                 <PokemonAvatar {...pokemon} />
                 <Stack direction="row" spacing={1}>
                     {
                         moves.map(move => (
                             <Chip
+                                key={`pokemon_${pokemon.name}_move_${move.name}`}
                                 size="small"
                                 label={`${move.name}`}
                                 avatar={<Avatar src={getSeribiiTypeImageUrl(move.type)} />}
@@ -101,7 +102,7 @@ function PokemonTeamResultsSection({ results, pokemonNameMap }: PokemonTeamResul
         const { pokemonWeakToType, pokemonWithMovesEffectiveAgainstType } = results[type];
 
         return (
-            <Paper variant="outlined" sx={{ padding: 2, marginBottom: 2, display: 'flex', flexDirection: 'row' }}>
+            <Paper variant="outlined" sx={{ padding: 2, marginBottom: 2, display: 'flex', flexDirection: 'row' }} key={`result_${type}`}>
                 <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} sx={{display: 'flex', flex: 1, flexDirection: 'row' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <img

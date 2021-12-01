@@ -118,9 +118,9 @@ function OnePokemonInput({
         Array.from(Array(NUM_ALLOWED_MOVES))
             .map((_, move_index) => 
                 !selectedPokemon ? 
-                <Tooltip title="Select a Pokemon before selecting its moves">
+                <Tooltip title="Select a Pokemon before selecting its moves" key={`pokemon_${index}_move_${move_index}_tooltip`}>
                     {selectMovesAutocomplete(move_index)}
-                </Tooltip>: 
+                </Tooltip> : 
                 selectMovesAutocomplete(move_index));
 
     /**
