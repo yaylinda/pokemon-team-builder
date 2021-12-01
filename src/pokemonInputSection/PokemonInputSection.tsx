@@ -10,12 +10,14 @@ export interface PokemonInputSectionProps {
     pokemonTeam: (SelectedPokemon | null)[],
     onChangeSelectedPokemon: (index: number, pokemon: Pokemon | null) => void,
     onChangeSelectedPokemonMove: (pokemon_index: number, move_index: number, move: PokemonMove | null) => void,
+    pokemonData: Pokemon[],
 }
 
 function PokemonInputSection({
     pokemonTeam,
     onChangeSelectedPokemon,
     onChangeSelectedPokemonMove,
+    pokemonData
 }: PokemonInputSectionProps) {
 
     /**
@@ -42,6 +44,7 @@ function PokemonInputSection({
                             onChangeSelectedPokemon={onChangeSelectedPokemon}
                             onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
                             selectedPokemonNames={selectedPokemonNames}
+                            pokemonData={pokemonData}
                         />
                     </Grid>)
             }

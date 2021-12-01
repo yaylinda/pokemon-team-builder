@@ -1,8 +1,10 @@
+import Alert from '@mui/material/Alert';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
+import LinearProgress from '@mui/material/LinearProgress';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import produce from 'immer';
@@ -12,7 +14,13 @@ import PokemonTeamResultsSection from './pokemonTeamResultsSection/PokemonTeamRe
 import { Pokemon, PokemonMove, PokemonNameMap, PokemonTeamEvaluationResults, SelectedPokemon } from './types';
 import { evaluateTeam, initializePokemonTeamEvaluationResults } from './util';
 
+const BDSP_POKEMON_DATA_JSON = 'https://raw.githubusercontent.com/yaylinda/serebii-parser/master/data/pokedex-bdsp.json';
+
 function App() {
+
+    const [loading, setLoading] = useState<boolean>(true);
+    const [pokemonData, setPokemonData] = useState<Pokemon[]>([]);
+    const [loadingError, setLoadingError] = useState<string>('');
 
     /**
      * 
@@ -23,6 +31,28 @@ function App() {
      * 
      */
     const [results, setResults] = useState<PokemonTeamEvaluationResults>(initializePokemonTeamEvaluationResults());
+
+    /**
+     * 
+     */
+    useEffect(() => {
+        const fetchPokemonData = async () => {
+            try {
+                setLoading(false);
+                setLoadingError('');
+                const response = await fetch(BDSP_POKEMON_DATA_JSON);
+                const responseJson = await response.json();
+                setPokemonData(responseJson as Pokemon[]);
+            } catch (error) {
+                setLoadingError(`Error fetching BDSP Pokemon Data. Please try again later.`);
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPokemonData();
+    }, []);
 
     /**
      * 
@@ -85,30 +115,32 @@ function App() {
         return (
             <AppBar position="static">
                 <Toolbar sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                    <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginRight: 2 }}/>
+                    <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginRight: 2 }} />
                     <Typography variant="h6" component="div">
                         Pokemon Brilliant Diamond and Shining Pearl Team Builder
                     </Typography>
-                    <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginLeft: 2 }}/>
+                    <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginLeft: 2 }} />
                 </Toolbar>
             </AppBar>
         );
     }
 
-    /**
-     * 
-     */
-    return (
-        <React.Fragment>
+    const renderContent = () => {
+        if (loadingError) {
+            return (
+                <Container>
+                    <Alert severity="error">{loadingError}</Alert>
+                </Container>
+            );
+        }
 
-            {renderHeaderBar()}
-
+        return (
             <Container>
-
                 <PokemonInputSection
                     pokemonTeam={pokemonTeam}
                     onChangeSelectedPokemon={onChangeSelectedPokemon}
                     onChangeSelectedPokemonMove={onChangeSelectedPokemonMove}
+                    pokemonData={pokemonData}
                 />
 
                 <Divider>
@@ -119,8 +151,29 @@ function App() {
                     results={results}
                     pokemonNameMap={pokemonMapByName}
                 />
-
             </Container>
+        );
+    }
+
+    const renderLoading = () => {
+        return (
+            <Container>
+                <LinearProgress />
+            </Container>
+        )
+    }
+
+    /**
+     * 
+     */
+    return (
+        <React.Fragment>
+
+            {renderHeaderBar()}
+
+            {
+                loading ? renderLoading() : renderContent()
+            }
 
         </React.Fragment>
     );

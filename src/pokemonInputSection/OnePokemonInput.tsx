@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/system/Box';
 import React, { useMemo } from 'react';
-import pokemonData from '../pokemonData';
 import { Pokemon, PokemonMove, SelectedPokemon } from '../types';
 import { SERIBII_BASE_URL } from '../util';
 
@@ -17,6 +16,7 @@ export interface OnePokemonInputProps {
     onChangeSelectedPokemon: (index: number, pokemon: Pokemon | null) => void;
     onChangeSelectedPokemonMove: (pokemon_index: number, move_index: number, move: PokemonMove | null) => void,
     selectedPokemonNames: Set<string>,
+    pokemonData: Pokemon[],
 }
 
 function OnePokemonInput({
@@ -24,7 +24,8 @@ function OnePokemonInput({
     selectedPokemon,
     onChangeSelectedPokemon,
     onChangeSelectedPokemonMove,
-    selectedPokemonNames
+    selectedPokemonNames,
+    pokemonData
 }: OnePokemonInputProps) {
 
     /**
