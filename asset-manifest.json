@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/pokemon-bdsp-team-builder/static/css/main.31f8407d.chunk.css",
-    "main.js": "/pokemon-bdsp-team-builder/static/js/main.d1254c9a.chunk.js",
-    "main.js.map": "/pokemon-bdsp-team-builder/static/js/main.d1254c9a.chunk.js.map",
+    "main.js": "/pokemon-bdsp-team-builder/static/js/main.ee50876a.chunk.js",
+    "main.js.map": "/pokemon-bdsp-team-builder/static/js/main.ee50876a.chunk.js.map",
     "runtime-main.js": "/pokemon-bdsp-team-builder/static/js/runtime-main.023bba6b.js",
     "runtime-main.js.map": "/pokemon-bdsp-team-builder/static/js/runtime-main.023bba6b.js.map",
-    "static/js/2.357c6105.chunk.js": "/pokemon-bdsp-team-builder/static/js/2.357c6105.chunk.js",
-    "static/js/2.357c6105.chunk.js.map": "/pokemon-bdsp-team-builder/static/js/2.357c6105.chunk.js.map",
+    "static/js/2.4c0e2117.chunk.js": "/pokemon-bdsp-team-builder/static/js/2.4c0e2117.chunk.js",
+    "static/js/2.4c0e2117.chunk.js.map": "/pokemon-bdsp-team-builder/static/js/2.4c0e2117.chunk.js.map",
     "static/js/3.f4aa5ce2.chunk.js": "/pokemon-bdsp-team-builder/static/js/3.f4aa5ce2.chunk.js",
     "static/js/3.f4aa5ce2.chunk.js.map": "/pokemon-bdsp-team-builder/static/js/3.f4aa5ce2.chunk.js.map",
     "index.html": "/pokemon-bdsp-team-builder/index.html",
     "static/css/main.31f8407d.chunk.css.map": "/pokemon-bdsp-team-builder/static/css/main.31f8407d.chunk.css.map",
-    "static/js/2.357c6105.chunk.js.LICENSE.txt": "/pokemon-bdsp-team-builder/static/js/2.357c6105.chunk.js.LICENSE.txt"
+    "static/js/2.4c0e2117.chunk.js.LICENSE.txt": "/pokemon-bdsp-team-builder/static/js/2.4c0e2117.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.023bba6b.js",
-    "static/js/2.357c6105.chunk.js",
+    "static/js/2.4c0e2117.chunk.js",
     "static/css/main.31f8407d.chunk.css",
-    "static/js/main.d1254c9a.chunk.js"
+    "static/js/main.ee50876a.chunk.js"
   ]
 }
