@@ -9,8 +9,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import produce from 'immer';
 import React, { useEffect, useMemo, useState } from 'react';
-import PokemonInputSection from './pokemonInputSection/PokemonInputSection';
-import PokemonTeamResultsSection from './pokemonTeamResultsSection/PokemonTeamResultsSection';
+import PokemonInputSection from './components/PokemonInputSection';
+import PokemonTeamResultsSection from './components/PokemonTeamResultsSection';
+import PokemonTeamSummarySection from './components/PokemonTeamSummarySection';
 import { Pokemon, PokemonMove, PokemonNameMap, PokemonTeamEvaluationResults, SelectedPokemon } from './types';
 import { evaluateTeam, initializePokemonTeamEvaluationResults } from './util';
 
@@ -125,6 +126,10 @@ function App() {
         );
     }
 
+    /**
+     * 
+     * @returns 
+     */
     const renderContent = () => {
         if (loadingError) {
             return (
@@ -144,6 +149,14 @@ function App() {
                 />
 
                 <Divider>
+                    <Chip label="SUMMARY" color="primary" variant="outlined" />
+                </Divider>
+
+                <PokemonTeamSummarySection
+                    results={results}
+                />
+
+                <Divider>
                     <Chip label="RESULTS" color="primary" variant="outlined" />
                 </Divider>
 
@@ -155,12 +168,16 @@ function App() {
         );
     }
 
+    /**
+     * 
+     * @returns 
+     */
     const renderLoading = () => {
         return (
             <Container>
                 <LinearProgress />
             </Container>
-        )
+        );
     }
 
     /**
