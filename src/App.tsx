@@ -16,6 +16,7 @@ import { Pokemon, PokemonMove, PokemonNameMap, PokemonTeamEvaluationResults, Sel
 import { evaluateTeam, initializePokemonTeamEvaluationResults } from './util';
 
 const BDSP_POKEMON_DATA_JSON = 'https://raw.githubusercontent.com/yaylinda/serebii-parser/master/data/pokedex-bdsp.json';
+const SV_POKEMON_DATA_JSON = 'https://raw.githubusercontent.com/yaylinda/serebii-parser/master/data/pokedex-sv.json';
 
 function App() {
 
@@ -41,7 +42,7 @@ function App() {
             try {
                 setLoading(false);
                 setLoadingError('');
-                const response = await fetch(BDSP_POKEMON_DATA_JSON);
+                const response = await fetch(SV_POKEMON_DATA_JSON);
                 const responseJson = await response.json();
                 setPokemonData(responseJson as Pokemon[]);
             } catch (error) {
@@ -118,7 +119,7 @@ function App() {
                 <Toolbar sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginRight: 2 }} />
                     <Typography variant="h6" component="div">
-                        Pokemon Brilliant Diamond and Shining Pearl Team Builder
+                        Pokemon Team Builder
                     </Typography>
                     <Avatar src={`${process.env.PUBLIC_URL}/pokeball.png`} sx={{ backgroundColor: 'white', marginLeft: 2 }} />
                 </Toolbar>
