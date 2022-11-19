@@ -1,6 +1,6 @@
 {
-  "name": "pokemon-bdsp-team-builder",
-  "homepage": "http://yaylinda.github.io/pokemon-bdsp-team-builder",
+  "name": "pokemon-team-builder",
+  "homepage": "http://yaylinda.github.io/pokemon-team-builder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
